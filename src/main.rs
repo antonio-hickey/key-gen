@@ -20,9 +20,16 @@ fn main() -> io::Result<()> {
     let mut key_passphrase = String::new();
     io::stdin().read_line(&mut key_passphrase).unwrap();
 
+    // Get the number of bits for the rsa key
+    println!("Enter the number of bits for your key or leave blank (1024 bits):");
+    let mut bits = String::new();
+    io::stdin().read_line(&mut bits).unwrap(); 
+    if bits.trim().is_empty() {
+        bits = String::from("1024");
+    }
+
     // Generate the keys
-    // TODO: allow the user to specify number of bits
-    let rsa = Rsa::generate(1024).unwrap();
+    let rsa = Rsa::generate(bits.parse::<u32>().unwrap()).unwrap();
     let private_key: Vec<u8> = rsa.private_key_to_pem_passphrase(
         Cipher::aes_128_cbc(), 
         &key_passphrase.trim().bytes().collect::<Vec<u8>>(),
