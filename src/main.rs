@@ -53,7 +53,9 @@ fn get_user_input() -> UserInput {
     io::stdin().read_line(&mut bits).unwrap(); 
     if bits.trim().is_empty() {
         bits = String::from("1024");
-    }
+    } else {
+        bits = bits.trim().to_owned();
+    };
 
     UserInput { 
         key_pair_name: key_pair_name.trim().to_owned(), 
